@@ -156,14 +156,15 @@ function FoodsaverOCR(){
         text = text.replace(/\s[\d\s\W]+\s/g, " ");            
 
         // Remove single characters
-        text = text.replace(/(\s|^)[^\s](\s|$)/g, "");            
+        text = text.replace(/(\s|^)[^\s](\s|$)/g, " ");            
 
         // Remove "words" that have no english characters
-        text = text.replace(/\s[^\sa-z]+\s/g, "");
+        text = text.replace(/\s[^\sa-z]+\s/g, " ");
 
         // Trim whitespace
+        text = text.replace(/\s{2,}/gm, " ");
         text = text.trim();
-        
+
         return text;
     };
 
