@@ -152,12 +152,10 @@ function FoodsaverOCR(){
         removeGibberish: function(line){            
 
             // Remove sequences of numbers
-            line = line.replace(/\s[\d\s\W]+\s/g, " ");
-            console.log(line);
+            line = line.replace(/\s[\d\s\W]+\s/g, " ");            
 
             // Remove single characters
-            line = line.replace(/(\s|^)[^\s](\b|$)/g, "");
-            console.log(line);
+            line = line.replace(/(\s|^)[^\s](\b|$)/g, "");            
 
             // Remove "words" that have no english characters
             line = line.replace(/\b[^\sa-zA-Z]+\b/g, "");
@@ -167,17 +165,12 @@ function FoodsaverOCR(){
 
             return line;
         },     
-        parse: function(text, removeJunk = true){
+        parse: function(text){
 
             if (map.hasOwnProperty(text)){
                 return map[text];
             } else {
-
-                if (removeJunk){
-                    return "";
-                } else {
-                    return text;
-                }                
+                return text;               
             }
         }
     }
