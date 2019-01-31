@@ -148,30 +148,48 @@ function FoodsaverOCR(){
         "yugurt": "yogurt",
         "zuehihn!": "zucchini"
     };
+
+    // Helpers
+    var cleanRawOCRInput = function(text){            
+
+        // Remove sequences of numbers
+        text = text.replace(/\s[\d\s\W]+\s/g, " ");            
+
+        // Remove single characters
+        text = text.replace(/(\s|^)[^\s](\b|$)/g, "");            
+
+        // Remove "words" that have no english characters
+        text = text.replace(/\b[^\sa-zA-Z]+\b/g, "");
+
+        // Trim whitespace
+        text = text.trim();
+
+        return text;
+    };
+
+    var mapText = function(text){
+
+        // Maps known mispellings to actual words
+        if (map.hasOwnProperty(text)){
+            return map[text];
+        } else {
+            return text;               
+        }
+    };
+
+    var cleanMappedOCRInput = function(text){
+
+        // Remove words that contain non-letter characters
+        text = text.replace(/\s?[^\s]*[^\u0041-\u005a\u0061-\u007a\s]+[^\s]*\s?/gm, " ");
+
+        return text;
+    }
+
     return {
-        removeGibberish: function(line){            
-
-            // Remove sequences of numbers
-            line = line.replace(/\s[\d\s\W]+\s/g, " ");            
-
-            // Remove single characters
-            line = line.replace(/(\s|^)[^\s](\b|$)/g, "");            
-
-            // Remove "words" that have no english characters
-            line = line.replace(/\b[^\sa-zA-Z]+\b/g, "");
-
-            // Trim whitespace
-            line = line.trim();
-
-            return line;
-        },     
-        parse: function(text){
-
-            if (map.hasOwnProperty(text)){
-                return map[text];
-            } else {
-                return text;               
-            }
+        clean: function(text){
+            var result = cleanRawOCRInput(text);
+            result = mapText(result);
+            return cleanMappedOCRInput(result);
         }
     }
 }
