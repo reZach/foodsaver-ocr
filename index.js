@@ -152,18 +152,18 @@ function FoodsaverOCR(){
     // Helpers
     var cleanRawOCRInput = function(text){            
 
-        // Remove sequences of numbers
+        // Remove sequences of characters that contain no letters
         text = text.replace(/\s[\d\s\W]+\s/g, " ");            
 
         // Remove single characters
-        text = text.replace(/(\s|^)[^\s](\b|$)/g, "");            
+        text = text.replace(/(\s|^)[^\s](\s|$)/g, "");            
 
         // Remove "words" that have no english characters
-        text = text.replace(/\b[^\sa-zA-Z]+\b/g, "");
+        text = text.replace(/\s[^\sa-z]+\s/g, "");
 
         // Trim whitespace
         text = text.trim();
-
+        
         return text;
     };
 
@@ -180,14 +180,15 @@ function FoodsaverOCR(){
     var cleanMappedOCRInput = function(text){
 
         // Remove words that contain non-letter characters
-        text = text.replace(/\s?[^\s]*[^\u0041-\u005a\u0061-\u007a\s]+[^\s]*\s?/gm, " ");
+        text = text.replace(/\s?[^\s]*[^\u0061-\u007a\s]+[^\s]*\s?/gm, " ");
 
         return text;
     }
 
     return {
         clean: function(text){
-            var working = cleanRawOCRInput(text);
+            var working = text.toLowerCase();
+            working = cleanRawOCRInput(working);
             var split = working.split(" ");
             var final = "";
 
