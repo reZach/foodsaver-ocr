@@ -187,9 +187,15 @@ function FoodsaverOCR(){
 
     return {
         clean: function(text){
-            var result = cleanRawOCRInput(text);
-            result = mapText(result);
-            return cleanMappedOCRInput(result);
+            var working = cleanRawOCRInput(text);
+            var split = working.split(" ");
+            var final = "";
+
+            for (var i = 0; i < split.length; i++){
+                final += mapText(working) +
+                    (i + 1 < split.Length ? " " : "");
+            }            
+            return cleanMappedOCRInput(final);
         }
     }
 }
